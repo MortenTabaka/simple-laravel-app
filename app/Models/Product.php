@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Produkt sprzedawany w sklepie.
  *
+ * @property integer $id Identyfikator produktu.
  * @property string $name Nazwa produktu.
  * @property string $sku Kod produktu.
  * @property decimal $price Cena produktu PLN.
@@ -16,6 +17,11 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $fillable = ['name', 'sku', 'price', 'active'];
+
+    public static function inRandomOrder(): Builder
+    {
+        return static::query()->inRandomOrder();
+    }
 
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory;

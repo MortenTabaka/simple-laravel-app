@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * Zamówienie w sklepie.
  *
+ * @property integer $id Identyfikator zamówienia.
  * @property string $status Status zamówienia.
  * @property string $total_price Cena zamówienia PLN.
  * @property User $user Użytkownik, który złożył zamówienie.
@@ -18,6 +19,11 @@ class Order extends Model
     use HasFactory;
 
     protected $fillable = ['status', 'total_price', 'user_id'];
+
+    public static function inRandomOrder()
+    {
+        return static::query()->inRandomOrder();
+    }
 
     public function user()
     {
