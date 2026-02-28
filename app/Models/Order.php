@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,7 +21,7 @@ class Order extends Model
 
     protected $fillable = ['status', 'total_price', 'user_id'];
 
-    public static function inRandomOrder()
+    public static function inRandomOrder(): Builder
     {
         return static::query()->inRandomOrder();
     }
