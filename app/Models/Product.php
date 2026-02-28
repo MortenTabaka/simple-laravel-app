@@ -24,6 +24,11 @@ class Product extends Model
         return static::query()->inRandomOrder();
     }
 
+    public static function create(array $all)
+    {
+        return static::query()->create($all);
+    }
+
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory;
 }
