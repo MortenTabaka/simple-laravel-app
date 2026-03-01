@@ -53,6 +53,6 @@ class OrderService
 
     public function getOrderWithItems(Order $order): Order
     {
-        return $order->load('orderItems');
+        return $order->load('orderItems.product');
     }
 }
