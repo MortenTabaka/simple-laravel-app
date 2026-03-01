@@ -53,12 +53,7 @@ class OrderService
 
             $order->refreshTotalPrice();
 
-            return $order->load('orderItems.product');
+            return $order->load('orderItems');
         });
-    }
-
-    public function getOrderWithItems(Order $order): Order
-    {
-        return $order->load('orderItems.product');
     }
 }
