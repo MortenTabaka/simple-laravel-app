@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Product extends Model
 {
-    protected $fillable = ['name', 'sku', 'price', 'active', 'stock'];
+    protected $fillable = ['name', 'sku', 'price', 'stock', 'active'];
 
     public static function inRandomOrder(): Builder
     {
