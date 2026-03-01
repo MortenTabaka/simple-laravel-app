@@ -47,7 +47,12 @@ class OrderService
                 $product->decrementStock($itemData['quantity']);
             }
 
-            return $order->load('items.product');
+            return $order->load('orderItems');
         });
+    }
+
+    public function getOrderWithItems(Order $order): Order
+    {
+        return $order->load('orderItems');
     }
 }

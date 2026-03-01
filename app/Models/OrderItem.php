@@ -4,14 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Pozycja zamówienia w sklepie.
  *
- * @property Order $order Zamówienie, do którego należy pozycja.
- * @property Product $product Produkt, który jest w zamówieniu.
+ * @property integer $order_id Identyfikator zamówienia.
+ * @property integer $product_id Identyfikator produktu.
  * @property integer $quantity Ilość produktów w zamówieniu.
  * @property string $unit_price Cena jednostkowa produktu w zamówieniu PLN.
+ *
+ * @property-read Order $order Zamówienie, do którego należy pozycja.
+ * @property-read Product $product Produkt, który jest w zamówieniu.
  */
 class OrderItem extends Model
 {
@@ -23,5 +27,15 @@ class OrderItem extends Model
     public static function create(array $array)
     {
         return static::query()->create($array);
+    }
+
+    public function order(): BelongsTo
+    {
+        return $this->belongsTo(Order::class);
+    }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
     }
 }

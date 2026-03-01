@@ -100,7 +100,11 @@ class OrderController extends Controller
      */
     public function show(string $id)
     {
-        return response()->json(Order::findOrFail($id));
+        $order = Order::findOrFail($id);
+
+        return response()->json(
+            $this->orderService->getOrderWithItems($order)
+        );
     }
 
     /**
