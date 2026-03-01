@@ -19,4 +19,9 @@ class OrderItem extends Model
     use HasFactory;
 
     protected $fillable = ['order_id', 'product_id', 'quantity', 'unit_price'];
+
+    public static function create(array $array)
+    {
+        return static::query()->create($array);
+    }
 }

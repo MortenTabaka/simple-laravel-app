@@ -30,6 +30,16 @@ class Product extends Model
         return static::query()->create($all);
     }
 
+    public static function lockForUpdate()
+    {
+        return static::query()->lockForUpdate();
+    }
+
+    public function decrementStock(mixed $quantity)
+    {
+        $this->decrement('stock', $quantity);
+    }
+
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory;
 }

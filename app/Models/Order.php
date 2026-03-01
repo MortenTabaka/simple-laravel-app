@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\OrderStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,8 +27,13 @@ class Order extends Model
         return static::query()->inRandomOrder();
     }
 
-    public function user()
+    public static function findOrFail(string $id): Order
     {
-        return $this->belongsTo(User::class);
+        return static::query()->findOrFail($id);
+    }
+
+    public static function create(array $array): Order
+    {
+        return static::query()->create($array);
     }
 }
