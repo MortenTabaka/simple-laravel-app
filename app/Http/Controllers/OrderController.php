@@ -105,39 +105,9 @@ class OrderController extends Controller
         );
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @OA\Put(
-     *     path="/api/orders/{id}",
-     *     tags={"Orders"},
-     *     summary="Update order",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="Order ID",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="string"),
-     *             @OA\Property(property="total_price", type="number")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Order updated"
-     *     )
-     * )
-     */
     public function update(Request $request, string $id)
     {
-        $order = Order::findOrFail($id);
-        $order->update($request->all());
-
-        return response()->json($order);
+        // TODO: Implement update() method.
     }
 
     /**
