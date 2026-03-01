@@ -7,11 +7,16 @@ use App\Models\Product;
 use App\OrderStatus;
 use Illuminate\Support\Facades\DB;
 use Exception;
+use Throwable;
 
 class OrderService
 {
     /**
      * Create order from validated items.
+     *
+     * @param array $items
+     * @return Order
+     * @throws Throwable
      */
     public function createFromItems(array $items): Order
     {
@@ -20,8 +25,6 @@ class OrderService
             $order = Order::create(['status' => OrderStatus::CREATED]);
 
             foreach ($items as $item) {
-
-
 
                 $product = Product::query()
                     ->lockForUpdate()

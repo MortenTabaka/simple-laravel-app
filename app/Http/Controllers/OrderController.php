@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
+use Throwable;
 
 /**
  * @OA\Tag(
@@ -63,7 +64,7 @@ class OrderController extends Controller
      * )
      * @throws \Throwable
      */
-    public function store(Request $request, OrderService $service)
+    public function store(Request $request)
     {
         $data = $request->validate([
             'items' => ['required', 'array'],
@@ -71,9 +72,9 @@ class OrderController extends Controller
             'items.*.quantity' => ['required','integer','min:1'],
         ]);
 
-        $order = $service->createFromItems($data['items']);
+        $order = $this->orderService->createFromItems($data['items']);
 
-        return response()->json($order, 201);
+        return response()->json($order);
     }
 
     /**
