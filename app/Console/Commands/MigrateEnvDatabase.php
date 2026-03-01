@@ -26,6 +26,6 @@ class MigrateEnvDatabase extends Command
     public function handle(): void
     {
         $result = exec('docker exec -it laravel_app php artisan migrate:fresh --seed', $output);
-        $this->info('Clean migration and seeding completed ' . implode("\n", $output));
+        $this->info(implode("\n", $output));
     }
 }
