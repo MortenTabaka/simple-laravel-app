@@ -51,6 +51,8 @@ class OrderService
                 $product->decrementStock($item['quantity']);
             }
 
+            $order->refreshTotalPrice();
+
             return $order->load('orderItems.product');
         });
     }
