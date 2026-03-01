@@ -26,7 +26,7 @@ class SwaggerApiGenerate extends Command
     public function handle()
     {
         // generate swagger api documentation inside container named laravel_app
-        exec('docker exec -it laravel_app php artisan l5-swagger:generate', $output);
+        exec('php artisan l5-swagger:generate', $output);
         $this->info(implode("\n", $output));
     }
 }
