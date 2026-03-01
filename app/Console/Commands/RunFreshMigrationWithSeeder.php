@@ -25,7 +25,7 @@ class RunFreshMigrationWithSeeder extends Command
      */
     public function handle(): void
     {
-        $result = exec('docker exec -it laravel_app php artisan migrate:fresh --seed');
-        $this->info('Clean migration and seeding completed ' . $result);
+        $result = exec('docker exec -it laravel_app php artisan migrate:fresh --seed', $output);
+        $this->info('Clean migration and seeding completed ' . implode("\n", $output));
     }
 }
