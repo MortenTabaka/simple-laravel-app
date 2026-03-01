@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreOrderRequest;
 use App\Models\Order;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
@@ -64,15 +65,9 @@ class OrderController extends Controller
      * )
      * @throws \Throwable
      */
-    public function store(Request $request)
+    public function store(StoreOrderRequest $request)
     {
-        $data = $request->validate([
-            'items' => ['required', 'array'],
-            'items.*.product_id' => ['required','integer','exists:products,id'],
-            'items.*.quantity' => ['required','integer','min:1'],
-        ]);
-
-        $order = $this->orderService->createFromItems($data['items']);
+        $order = $this->orderService->createFromItems($request->validated());
 
         return response()->json($order);
     }
