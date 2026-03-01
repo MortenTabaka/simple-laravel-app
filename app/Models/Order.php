@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\OrderStatus;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Zamówienie w sklepie.
@@ -13,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $status Status zamówienia.
  * @property string $total_price Cena zamówienia PLN.
  * @property User $user Użytkownik, który złożył zamówienie.
+ * @property-read OrderItem[] $orderItems Pozycje zamówienia.
  */
 class Order extends Model
 {
@@ -26,8 +29,18 @@ class Order extends Model
         return static::query()->inRandomOrder();
     }
 
-    public function user()
+    public static function findOrFail(string $id): Order
     {
-        return $this->belongsTo(User::class);
+        return static::query()->findOrFail($id);
+    }
+
+    public static function create(array $array): Order
+    {
+        return static::query()->create($array);
+    }
+
+    public function orderItems(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
     }
 }

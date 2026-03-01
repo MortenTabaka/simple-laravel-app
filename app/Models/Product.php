@@ -14,10 +14,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $sku Kod produktu.
  * @property decimal $price Cena produktu PLN.
  * @property boolean $active Czy produkt jest dostępny.
+ * @property integer $stock Ilość dostępnych sztuk produktu.
  */
 class Product extends Model
 {
-    protected $fillable = ['name', 'sku', 'price', 'active'];
+    protected $fillable = ['name', 'sku', 'price', 'stock', 'active'];
 
     public static function inRandomOrder(): Builder
     {
@@ -27,6 +28,16 @@ class Product extends Model
     public static function create(array $all)
     {
         return static::query()->create($all);
+    }
+
+    public static function lockForUpdate()
+    {
+        return static::query()->lockForUpdate();
+    }
+
+    public function decrementStock(mixed $quantity)
+    {
+        $this->decrement('stock', $quantity);
     }
 
     /** @use HasFactory<\Database\Factories\ProductFactory> */
