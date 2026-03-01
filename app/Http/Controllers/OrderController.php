@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreOrderRequest;
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
@@ -67,9 +68,14 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request)
     {
-        $order = $this->orderService->createFromItems($request->validated());
+        $order = $this->orderService
+            ->createFromItems($request->validated()['items']);
 
-        return response()->json($order);
+        $order->load('items');
+
+        return (new OrderResource($order))
+            ->response()
+            ->setStatusCode(201);
     }
 
     /**
@@ -93,11 +99,9 @@ class OrderController extends Controller
      */
     public function show(string $id)
     {
-        $order = Order::findOrFail($id);
+        $order = Order::with('orderItems')->findOrFail($id);
 
-        return response()->json(
-            $this->orderService->getOrderWithItems($order)
-        );
+        return new OrderResource($order);
     }
 
     public function update(Request $request, string $id)

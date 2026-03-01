@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\OrderStatus;
+use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $status Status zamówienia.
  * @property string $total_price Cena zamówienia PLN.
  * @property User $user Użytkownik, który złożył zamówienie.
+ * @property datetime $created_at Data utworzenia zamówienia.
  * @property-read OrderItem[] $orderItems Pozycje zamówienia.
  */
 class Order extends Model
@@ -42,5 +43,10 @@ class Order extends Model
     public function orderItems(): HasMany
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function whenLoaded(string $name, \Closure $param): Order
+    {
+        return $this->load($name, $param);
     }
 }
