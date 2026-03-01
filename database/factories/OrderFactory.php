@@ -20,7 +20,7 @@ class OrderFactory extends Factory
     {
         return [
             'status' => fake()->randomElement([OrderStatus::CREATED, OrderStatus::CONFIRMED]),
-            'total_price' => fake()->randomFloat(2, 100, 2000),
+            'total_price' => fake()->randomFloat(2, 1000, 4000),
             'user_id' => User::factory(),
         ];
     }

@@ -18,7 +18,10 @@ class OrderItemFactory extends Factory
      */
     public function definition(): array
     {
+        /** @var Order $order */
         $order = Order::inRandomOrder()->first();
+
+        /** @var Product $product */
         $product = Product::inRandomOrder()->first();
 
         return [
