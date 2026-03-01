@@ -56,6 +56,9 @@
                 "responses": {
                     "201": {
                         "description": "Order created"
+                    },
+                    "422": {
+                        "description": "Validation error"
                     }
                 }
             }
@@ -81,48 +84,6 @@
                 "responses": {
                     "200": {
                         "description": "Order found"
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "Orders"
-                ],
-                "summary": "Update order",
-                "description": "Update the specified resource in storage.",
-                "operationId": "6a7029f5510ca08e28a2d58a5fe19439",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Order ID",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "status": {
-                                        "type": "string"
-                                    },
-                                    "total_price": {
-                                        "type": "number"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Order updated"
                     }
                 }
             },
