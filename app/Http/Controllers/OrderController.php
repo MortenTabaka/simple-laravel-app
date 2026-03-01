@@ -55,26 +55,23 @@ class OrderController extends Controller
      *     @OA\Response(
      *         response=201,
      *         description="Order created"
+     *     ),
+     *     @OA\Response(
+     *         response=422,
+     *         description="Validation error"
      *     )
      * )
+     * @throws \Throwable
      */
-    public function store(Request $request)
+    public function store(Request $request, OrderService $service)
     {
         $data = $request->validate([
-            'items' => ['required', 'array', 'min:1'],
-            'items.*.product_id' => [
-                'required',
-                'integer',
-                'exists:products,id'
-            ],
-            'items.*.quantity' => [
-                'required',
-                'integer',
-                'min:1'
-            ],
+            'items' => ['required', 'array'],
+            'items.*.product_id' => ['required','integer','exists:products,id'],
+            'items.*.quantity' => ['required','integer','min:1'],
         ]);
 
-        $order = $this->orderService->createFromItems($data);
+        $order = $service->createFromItems($data['items']);
 
         return response()->json($order, 201);
     }

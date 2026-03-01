@@ -11,43 +11,36 @@ use Exception;
 class OrderService
 {
     /**
-     * @param array $data
-     * @return Order
-     * @throws \Throwable
+     * Create order from validated items.
      */
-    public function createFromItems(array $data): Order
+    public function createFromItems(array $items): Order
     {
-        return DB::transaction(function () use ($data) {
+        return DB::transaction(function () use ($items) {
 
-            // create empty order
-            $order = Order::create([]);
+            $order = Order::create();
 
-            foreach ($data['items'] as $itemData) {
+            foreach ($items as $item) {
 
-                /** @var Product $product */
-                $product = Product::lockForUpdate()
-                    ->findOrFail($itemData['product_id']);
+                $product = Product::query()
+                    ->lockForUpdate()
+                    ->findOrFail($item['product_id']);
 
-                // check stock
-                if ($product->stock < $itemData['quantity']) {
+                if ($product->stock < $item['quantity']) {
                     throw new Exception(
-                        "Zbyt mało sztuk produktu {$product->name} ({$product->sku}) dostępne: {$product->stock}"
+                        "Not enough stock for {$product->name}"
                     );
                 }
 
-                // create order item
-                OrderItem::create([
-                    'order_id' => $order->id,
+                $order->orderItems()->create([
                     'product_id' => $product->id,
-                    'quantity' => $itemData['quantity'],
+                    'quantity'   => $item['quantity'],
                     'unit_price' => $product->price,
                 ]);
 
-                // decrease stock
-                $product->decrementStock($itemData['quantity']);
+                $product->decrementStock($item['quantity']);
             }
 
-            return $order->load('orderItems');
+            return $order->load('orderItems.product');
         });
     }
 
