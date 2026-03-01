@@ -14,10 +14,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $sku Kod produktu.
  * @property decimal $price Cena produktu PLN.
  * @property boolean $active Czy produkt jest dostępny.
+ * @property integer $stock Ilość dostępnych sztuk produktu.
  */
 class Product extends Model
 {
-    protected $fillable = ['name', 'sku', 'price', 'active'];
+    protected $fillable = ['name', 'sku', 'price', 'active', 'stock'];
 
     public static function inRandomOrder(): Builder
     {
