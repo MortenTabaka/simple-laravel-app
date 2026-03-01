@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreOrderRequest;
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
@@ -34,7 +36,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return response()->json(Order::all());
+        return OrderResource::collection(Order::all());
     }
 
     /**
@@ -64,17 +66,16 @@ class OrderController extends Controller
      * )
      * @throws \Throwable
      */
-    public function store(Request $request)
+    public function store(StoreOrderRequest $request)
     {
-        $data = $request->validate([
-            'items' => ['required', 'array'],
-            'items.*.product_id' => ['required','integer','exists:products,id'],
-            'items.*.quantity' => ['required','integer','min:1'],
-        ]);
+        $order = $this->orderService
+            ->createFromItems($request->validated()['items']);
 
-        $order = $this->orderService->createFromItems($data['items']);
+        $order->load('items');
 
-        return response()->json($order);
+        return (new OrderResource($order))
+            ->response()
+            ->setStatusCode(201);
     }
 
     /**
@@ -98,46 +99,14 @@ class OrderController extends Controller
      */
     public function show(string $id)
     {
-        $order = Order::findOrFail($id);
+        $order = Order::with('orderItems')->findOrFail($id);
 
-        return response()->json(
-            $this->orderService->getOrderWithItems($order)
-        );
+        return new OrderResource($order);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @OA\Put(
-     *     path="/api/orders/{id}",
-     *     tags={"Orders"},
-     *     summary="Update order",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="Order ID",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="string"),
-     *             @OA\Property(property="total_price", type="number")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Order updated"
-     *     )
-     * )
-     */
     public function update(Request $request, string $id)
     {
-        $order = Order::findOrFail($id);
-        $order->update($request->all());
-
-        return response()->json($order);
+        // TODO: Implement update() method.
     }
 
     /**

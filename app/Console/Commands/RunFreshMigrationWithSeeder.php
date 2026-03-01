@@ -23,9 +23,9 @@ class RunFreshMigrationWithSeeder extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
-        $result = exec('docker-compose exec laravel_app php artisan migrate:fresh --seed');
+        $result = exec('docker exec -it laravel_app php artisan migrate:fresh --seed');
         $this->info('Clean migration and seeding completed ' . $result);
     }
 }

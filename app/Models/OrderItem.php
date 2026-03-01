@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * Pozycja zamówienia w sklepie.
  *
+ * @property integer $id Identyfikator pozycji zamówienia.
  * @property integer $order_id Identyfikator zamówienia.
  * @property integer $product_id Identyfikator produktu.
  * @property integer $quantity Ilość produktów w zamówieniu.
