@@ -49,4 +49,18 @@ class Order extends Model
     {
         return $this->load($name, $param);
     }
+
+    public function refreshTotalPrice(): void
+    {
+        $this->update([
+            'total_price' => $this->calculateTotalPrice(),
+        ]);
+    }
+
+    public function calculateTotalPrice(): float
+    {
+        return $this->orderItems->sum(function ($item) {
+            return $item->quantity * $item->unit_price;
+        });
+    }
 }

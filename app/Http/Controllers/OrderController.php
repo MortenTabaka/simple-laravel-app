@@ -7,7 +7,6 @@ use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Services\OrderService;
 use Illuminate\Http\Request;
-use Throwable;
 
 /**
  * @OA\Tag(
@@ -68,10 +67,7 @@ class OrderController extends Controller
      */
     public function store(StoreOrderRequest $request)
     {
-        $order = $this->orderService
-            ->createFromItems($request->validated()['items']);
-
-        $order->load('items');
+        $order = $this->orderService->createFromItems($request['items']);
 
         return (new OrderResource($order))
             ->response()

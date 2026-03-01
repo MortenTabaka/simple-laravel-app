@@ -51,12 +51,9 @@ class OrderService
                 $product->decrementStock($item['quantity']);
             }
 
-            return $order->load('orderItems.product');
-        });
-    }
+            $order->refreshTotalPrice();
 
-    public function getOrderWithItems(Order $order): Order
-    {
-        return $order->load('orderItems.product');
+            return $order->load('orderItems');
+        });
     }
 }

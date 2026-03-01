@@ -4,14 +4,14 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
-class SwaggerApiGenerate extends Command
+class MigrateEnvDatabase extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'app:api-generate';
+    protected $signature = 'app:migrate-env-database';
 
     /**
      * The console command description.
@@ -23,10 +23,9 @@ class SwaggerApiGenerate extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
-        // generate swagger api documentation inside container named laravel_app
-        exec('php artisan l5-swagger:generate', $output);
+        $result = exec('php artisan migrate:fresh --seed', $output);
         $this->info(implode("\n", $output));
     }
 }
