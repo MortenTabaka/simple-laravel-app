@@ -11,7 +11,7 @@ class SwaggerApiGenerate extends Command
      *
      * @var string
      */
-    protected $signature = 'app:swagger-api-generate';
+    protected $signature = 'app:api-generate';
 
     /**
      * The console command description.
@@ -26,7 +26,7 @@ class SwaggerApiGenerate extends Command
     public function handle()
     {
         // generate swagger api documentation inside container named laravel_app
-        $result = exec('docker-compose exec laravel_app php artisan l5-swagger:generate');
+        $result = exec('docker exec -it laravel_app php artisan l5-swagger:generate');
         $this->info('Api documentation generated ' . $result);
     }
 }
