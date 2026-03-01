@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\Models\Order;
-use App\Models\OrderItem;
 use App\Models\Product;
+use App\OrderStatus;
 use Illuminate\Support\Facades\DB;
 use Exception;
 
@@ -17,13 +17,21 @@ class OrderService
     {
         return DB::transaction(function () use ($items) {
 
-            $order = Order::create();
+            $order = Order::create(['status' => OrderStatus::CREATED]);
 
             foreach ($items as $item) {
+
+
 
                 $product = Product::query()
                     ->lockForUpdate()
                     ->findOrFail($item['product_id']);
+
+                if ($product->active === false) {
+                    throw new Exception(
+                        "Product {$product->name} is not active"
+                    );
+                }
 
                 if ($product->stock < $item['quantity']) {
                     throw new Exception(
