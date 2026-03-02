@@ -1,28 +1,24 @@
 # Set up  Laravel application with Docker
 
-Run `
+To start containers run 
 ```bash
 docker-compose up -d
 ```
-to start containers.
 
-Run 
+To install dependencies run 
 ```bash
 docker exec -it laravel_app composer install
 ```
-to install dependencies.
 
-Run 
+To create database and seed it run 
 ```bash
 docker exec -it laravel_app php artisan app:migrate-env-database
 ```
-to create database and seed it.
 
-Run 
+To create test database and seed it run 
 ```bash
 docker exec -it laravel_app php artisan app:migrate-test-database
 ```
-to create test database and seed it.
 
 ## Run tests
 Run 
